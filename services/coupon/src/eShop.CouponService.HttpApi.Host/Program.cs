@@ -1,6 +1,3 @@
-
-using eShop.CouponService.Domain;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
