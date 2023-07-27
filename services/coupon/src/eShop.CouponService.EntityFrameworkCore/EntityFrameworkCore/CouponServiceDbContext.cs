@@ -1,9 +1,5 @@
-﻿using System.Data;
-using eShop.CouponService.Domain;
-using eShop.DDD.Entity;
+﻿using eShop.DDD.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
 
 namespace eShop.CouponService.EntityFrameworkCore;
 public class CouponServiceDbContext : DbContext, IEfCoreDbContext
@@ -13,6 +9,4 @@ public class CouponServiceDbContext : DbContext, IEfCoreDbContext
     {
 
     }
-    DbSet<test> testdb { get; set; }
 }
-// dotnet ef migrations add test3
