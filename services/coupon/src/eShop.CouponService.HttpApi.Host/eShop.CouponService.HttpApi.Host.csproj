@@ -23,11 +23,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
+    <ProjectReference Include="..\eShop.CouponService.Application.Contracts\eShop.CouponService.Application.Contracts.csproj" />
+    <ProjectReference Include="..\eShop.CouponService.Application\eShop.CouponService.Application.csproj" />
     <ProjectReference Include="..\eShop.CouponService.EntityFrameworkCore\eShop.CouponService.EntityFrameworkCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 

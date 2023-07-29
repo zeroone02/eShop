@@ -1,16 +1,19 @@
+using eShop.CouponService.Application;
+using eShop.CouponService.Application.Contracts;
+using eShop.CouponService.Domain;
 using eShop.CouponService.EntityFrameworkCore;
 using eShop.DDD.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-
 //Register DbContext
 builder.Services.AddDbContext<IEfCoreDbContext, CouponServiceDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddTransient<IRepository<Coupon, Guid>, Repository<Coupon, Guid>>();
+builder.Services.AddTransient<ICouponService, CouponService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
