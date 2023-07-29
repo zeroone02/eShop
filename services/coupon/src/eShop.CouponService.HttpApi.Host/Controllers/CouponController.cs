@@ -1,6 +1,5 @@
-﻿using eShop.CouponService.Domain;
-using eShop.DDD.Entity;
-using Microsoft.AspNetCore.Http;
+﻿using eShop.CouponService.Application.Contracts;
+using eShop.DDD.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.CouponService.HttpApi.Host.Controllers;
@@ -8,17 +7,26 @@ namespace eShop.CouponService.HttpApi.Host.Controllers;
 [ApiController]
 public class CouponController : ControllerBase
 {
-    private IRepository<Coupon, Guid> _repository;
-    public CouponController(IRepository<Coupon, Guid> repository)
+    private ResponseDto _responseDto;
+    private ICouponService _couponService;
+    public CouponController(ICouponService couponService)
     {
-        _repository = repository;
+        _responseDto = new ResponseDto();
+        _couponService = couponService;
     }
-    
-
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<ResponseDto> GetList()
     {
-        var obj  = await _repository.GetListAsync();
-        return Ok(obj);
+        try
+        {
+            _responseDto.Result =  await _couponService.GetListAsync();
+        }
+        catch (Exception ex)
+        {
+            _responseDto.IsSuccess = false;
+            _responseDto.Message = ex.Message;
+        }
+        return _responseDto;
     }
+
 }

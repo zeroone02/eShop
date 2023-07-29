@@ -1,3 +1,4 @@
+using AutoMapper;
 using eShop.CouponService.Application;
 using eShop.CouponService.Application.Contracts;
 using eShop.CouponService.Domain;
@@ -11,8 +12,13 @@ builder.Services.AddDbContext<IEfCoreDbContext, CouponServiceDbContext>(options 
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+//add automapper
+IMapper mapper =  MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//add genericRepository
 builder.Services.AddTransient<IRepository<Coupon, Guid>, Repository<Coupon, Guid>>();
+//add Services
 builder.Services.AddTransient<ICouponService, CouponService>();
 
 builder.Services.AddControllers();
