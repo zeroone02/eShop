@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using eShop.CouponService.EntityFrameworkCore;
@@ -11,9 +12,11 @@ using eShop.CouponService.EntityFrameworkCore;
 namespace eShop.CouponService.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(CouponServiceDbContext))]
-    partial class CouponServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230729092844_SeedCouponTables")]
+    partial class SeedCouponTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,24 +48,17 @@ namespace eShop.CouponService.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a0f09697-1711-4bf5-b4d2-af154e68f2b2"),
+                            Id = new Guid("e27a93f5-47e7-4578-9d96-6a8b6691e77b"),
                             CouponCode = "10OFF",
                             DiscountAmount = 10m,
                             MinAmount = 10
                         },
                         new
                         {
-                            Id = new Guid("4729a394-e5f7-4e0b-adc7-0b65f9f7f48f"),
+                            Id = new Guid("704a9dc9-fbfb-4b1a-bf73-7ed6bba0ed02"),
                             CouponCode = "20OFF",
                             DiscountAmount = 20m,
                             MinAmount = 40
-                        },
-                        new
-                        {
-                            Id = new Guid("6543bb3f-d5eb-4077-8ffa-8b3ce5de8080"),
-                            CouponCode = "30OFF",
-                            DiscountAmount = 30m,
-                            MinAmount = 600
                         });
                 });
 #pragma warning restore 612, 618
