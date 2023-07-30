@@ -16,17 +16,37 @@ public class CouponService : ICouponService
     public async Task<IEnumerable<CouponDto>> GetListAsync()
     {
         IEnumerable<Coupon> coupons = await _repository.GetListAsync();
+        if (coupons == null)
+        {
+            throw new Exception("Данные не найдены");
+        }
         IEnumerable<CouponDto> couponDtos = _mapper.Map<IEnumerable<CouponDto>>(coupons);
         return couponDtos;
     }
 
     public async Task<CouponDto> GetByCodeAsync(string code)
     {
-        throw new NotImplementedException();
+        
+            Coupon coupon = _repository.GetQueryable().FirstOrDefault(x => x.CouponCode == code);
+
+            if(coupon == null)
+            {
+                throw new Exception($"Запись с code = {code} не найдена");
+            }
+
+            CouponDto couponDto = _mapper.Map<CouponDto>(coupon);
+            return couponDto;    
+       
     }
 
-    public async Task<Coupon> GetAsync(Guid id)
+    public async Task<CouponDto> GetAsync(Guid id)
     {
-        throw new NotImplementedException();
+        Coupon coupon = await _repository.GetAsync(id);
+        if (coupon == null)
+        {
+            throw new Exception($"Запись с id = {id} не найдена");
+        }
+        CouponDto couponDto = _mapper.Map<CouponDto>(coupon);
+        return couponDto;
     }
 }

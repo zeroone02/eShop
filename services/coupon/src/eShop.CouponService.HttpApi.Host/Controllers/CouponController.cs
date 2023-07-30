@@ -3,30 +3,57 @@ using eShop.DDD.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.CouponService.HttpApi.Host.Controllers;
+
 [Route("api/coupon")]
 [ApiController]
 public class CouponController : ControllerBase
 {
-    private ResponseDto _responseDto;
     private ICouponService _couponService;
     public CouponController(ICouponService couponService)
     {
-        _responseDto = new ResponseDto();
         _couponService = couponService;
     }
     [HttpGet]
-    public async Task<ResponseDto> GetList()
+    public async Task<IActionResult> GetList()
     {
         try
         {
-            _responseDto.Result =  await _couponService.GetListAsync();
+            var result  = await _couponService.GetListAsync();
+            return Ok(ApiResponseBuilder.CreateApiResponse(result));
         }
         catch (Exception ex)
         {
-            _responseDto.IsSuccess = false;
-            _responseDto.Message = ex.Message;
+            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<bool>(ex.Message));
         }
-        return _responseDto;
+    }
+    [HttpGet]
+    [Route("GetByCode/{code}")]
+    public async Task<IActionResult> GetByCode(string code)
+    {
+        try
+        {
+            var result = await _couponService.GetByCodeAsync(code);
+            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+        }
+    }
+
+    [HttpGet]
+    [Route("GetById/{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        try
+        {
+            var result = await _couponService.GetAsync(id);
+            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+        }
     }
 
 }
