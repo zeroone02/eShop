@@ -2,7 +2,7 @@
 using eShop.WebUtility;
 
 namespace eShop.Web.Application.Contracts;
-public interface IBaseService<T>
+public interface IBaseService
 {
-    Task<ResponseDto<T>?> SendAsync(RequestDto<T> requestDto);
+    Task<ResponseDto?> SendAsync(RequestDto requestDto);
 }

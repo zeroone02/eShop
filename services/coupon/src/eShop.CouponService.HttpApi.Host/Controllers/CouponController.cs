@@ -11,82 +11,95 @@ public class CouponController : ControllerBase
 {
     private ICouponService _couponService;
     private UnitOfWork _unitOfWork;
+    private ResponseDto _response;
     public CouponController(ICouponService couponService, UnitOfWork unitOfWork)
     {
         _couponService = couponService;
         _unitOfWork = unitOfWork;
+        _response = new ResponseDto();
     }
     [HttpGet]
-    public async Task<IActionResult> GetList()
+    public async Task<ResponseDto> GetList()
     {
         try
         {
             var result  = await _couponService.GetListAsync();
-            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+            _response.Result = result;
+            
         }
         catch (Exception ex)
         {
-            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<bool>(ex.Message));
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
         }
+        return _response;
     }
     [HttpGet]
     [Route("GetByCode/{code}")]
-    public async Task<IActionResult> GetByCode(string code)
+    public async Task<ResponseDto> GetByCode(string code)
     {
         try
         {
             var result = await _couponService.GetByCodeAsync(code);
-            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+            _response.Result = result;
         }
         catch (Exception ex)
         {
-            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
         }
+        return _response;
     }
 
     [HttpGet]
     [Route("GetById/{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<ResponseDto> GetById(Guid id)
     {
         try
         {
             var result = await _couponService.GetAsync(id);
-            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+            _response.Result = result;
         }
         catch (Exception ex)
         {
-            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
         }
+        return _response;
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCoupon([FromBody] CouponDto couponDto)
+    public async Task<ResponseDto> CreateCoupon([FromBody] CouponDto couponDto)
     {
         try
         {
             var result = await _couponService.AddAsync(couponDto);
             await _unitOfWork.SaveChangesAsync();
-            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+            _response.Result = result;
         }
         catch (Exception ex)
         {
-            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message,"Купон не создан"));
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
         }
+        return _response;
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteCoupon(Guid id)
+    public async Task<ResponseDto> DeleteCoupon(Guid id)
     {
         try
         {
             var result = await _couponService.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
-            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+            _response.Result = result;
         }
         catch (Exception ex)
         {
-            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
         }
+        return _response;
     }
 
 }

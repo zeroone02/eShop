@@ -9,20 +9,17 @@ using System.Text;
 using static eShop.Web.Domain.Domain.Shared.SD;
 
 namespace eShop.Web.Application;
-public class BaseService<T> : IBaseService<T>
+public class BaseService : IBaseService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     public BaseService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
-    public async Task<ResponseDto<T>?> SendAsync(RequestDto<T> requestDto)
+    public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
     {
         try
         {
-
-
-
             HttpClient client = _httpClientFactory.CreateClient("eShop");
             HttpRequestMessage message = new();
             message.Headers.Add("Accept", "application/json");
@@ -57,63 +54,38 @@ public class BaseService<T> : IBaseService<T>
                     return new()
                     {
                         IsSuccess = false,
-                        Error = new ErrorResult()
-                        {
-                            Message = "Not Found",
-                            Details = ""
-
-                        }
+                        Message = "Not Found"
                     };
                 case HttpStatusCode.Forbidden:
                     return new()
                     {
                         IsSuccess = false,
-                        Error = new ErrorResult()
-                        {
-                            Message = "Access Denied",
-                            Details = ""
-
-                        }
+                        Message = "Access Denied"
                     };
                 case HttpStatusCode.Unauthorized:
                     return new()
                     {
                         IsSuccess = false,
-                        Error = new ErrorResult()
-                        {
-                            Message = "Unauthorized",
-                            Details = ""
-
-                        }
+                        Message = "Unauthorized"
                     };
                 case HttpStatusCode.InternalServerError:
                     return new()
                     {
                         IsSuccess = false,
-                        Error = new ErrorResult()
-                        {
-                            Message = "Internal Server Error",
-                            Details = ""
-
-                        }
+                        Message = "Internal Server Error"
                     };
                 default:
                     var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                    var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto<T>>(apiContent);
+                    var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
                     return apiResponseDto;
             }
         }
         catch (Exception ex)
         {
-            var dto = new ResponseDto<T>()
+            var dto = new ResponseDto()
             {
                 IsSuccess = false,
-                Error = new ErrorResult()
-                {
-                    Message = ex.Message,
-                    Details = "Ошибка"
-
-                }
+                Message = ex.Message.ToString()
             };
             return dto;
         }
