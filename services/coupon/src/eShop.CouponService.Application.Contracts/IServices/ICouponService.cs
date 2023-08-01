@@ -8,4 +8,5 @@ public interface ICouponService
     public  Task<CouponDto> GetByCodeAsync(string code);
     public Task<Coupon> AddAsync(CouponDto couponDto);
     public Task<Coupon> DeleteAsync(Guid id);
+    public Task<CouponDto> UpdateAsync(CouponDto couponDto);
 }

@@ -69,7 +69,7 @@ public class CouponController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ResponseDto> CreateCoupon([FromBody] CouponDto couponDto)
+    public async Task<ResponseDto> Create([FromBody] CouponDto couponDto)
     {
         try
         {
@@ -86,11 +86,27 @@ public class CouponController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ResponseDto> DeleteCoupon(Guid id)
+    public async Task<ResponseDto> Delete(Guid id)
     {
         try
         {
             var result = await _couponService.DeleteAsync(id);
+            await _unitOfWork.SaveChangesAsync();
+            _response.Result = result;
+        }
+        catch (Exception ex)
+        {
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
+        }
+        return _response;
+    }
+    [HttpPut]
+    public async Task<ResponseDto> Update([FromBody] CouponDto couponDto)
+    {
+        try
+        {
+            var result = await _couponService.UpdateAsync(couponDto);
             await _unitOfWork.SaveChangesAsync();
             _response.Result = result;
         }
