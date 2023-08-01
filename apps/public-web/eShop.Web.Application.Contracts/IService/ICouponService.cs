@@ -7,5 +7,6 @@ public interface ICouponService
     Task<ResponseDto?> GetAllCouponsAsync();
     Task<ResponseDto?> GetCouponByIdAsync(Guid id);
     Task<ResponseDto?> CreateCouponsAsync(CouponDto couponDto);
-    Task<ResponseDto?> GetCoupon(Guid id);
+    Task<ResponseDto?> DeleteCouponAsync(Guid id);
+    Task<ResponseDto?> UpdateCouponAsync(CouponDto couponDto);
 }
