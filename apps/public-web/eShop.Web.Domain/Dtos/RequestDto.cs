@@ -1,4 +1,4 @@
-﻿using static eShop.WebUtility.SD;
+﻿using static eShop.Web.Domain.Domain.Shared.SD;
 
 namespace eShop.WebUtility;
 public class RequestDto<T>

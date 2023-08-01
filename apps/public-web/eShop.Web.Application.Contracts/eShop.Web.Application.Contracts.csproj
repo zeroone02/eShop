@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="IService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\common\eShop.DDD.Application.Contracts\eShop.DDD.Application.Contracts.csproj" />
+    <ProjectReference Include="..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
+    <ProjectReference Include="..\eShop.Web.Domain\eShop.Web.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
