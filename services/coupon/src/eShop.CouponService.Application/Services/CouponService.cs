@@ -55,4 +55,11 @@ public class CouponService : ICouponService
         await _repository.InsertAsync(coupon);
         return coupon;
     }
+
+    public async Task<Coupon> DeleteAsync(Guid id)
+    {
+        var coupon = await _repository.GetAsync(id);
+        await _repository.Delete(coupon);
+        return coupon;
+    }
 }

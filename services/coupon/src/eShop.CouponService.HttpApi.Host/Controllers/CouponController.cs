@@ -74,4 +74,19 @@ public class CouponController : ControllerBase
         }
     }
 
+    [HttpDelete]
+    public async Task<IActionResult> DeleteCoupon(Guid id)
+    {
+        try
+        {
+            var result = await _couponService.DeleteAsync(id);
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+        }
+    }
+
 }
