@@ -20,6 +20,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IRepository<Coupon, Guid>, Repository<Coupon, Guid>>();
 //add Services
 builder.Services.AddTransient<ICouponService, CouponService>();
+//
+builder.Services.AddTransient<UnitOfWork>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

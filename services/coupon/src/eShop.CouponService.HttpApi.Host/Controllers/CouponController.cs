@@ -1,5 +1,6 @@
 ﻿using eShop.CouponService.Application.Contracts;
 using eShop.DDD.Application.Contracts;
+using eShop.DDD.Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.CouponService.HttpApi.Host.Controllers;
@@ -9,9 +10,11 @@ namespace eShop.CouponService.HttpApi.Host.Controllers;
 public class CouponController : ControllerBase
 {
     private ICouponService _couponService;
-    public CouponController(ICouponService couponService)
+    private UnitOfWork _unitOfWork;
+    public CouponController(ICouponService couponService, UnitOfWork unitOfWork)
     {
         _couponService = couponService;
+        _unitOfWork = unitOfWork;
     }
     [HttpGet]
     public async Task<IActionResult> GetList()
@@ -48,6 +51,36 @@ public class CouponController : ControllerBase
         try
         {
             var result = await _couponService.GetAsync(id);
+            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message));
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCoupon([FromBody] CouponDto couponDto)
+    {
+        try
+        {
+            var result = await _couponService.AddAsync(couponDto);
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(ApiResponseBuilder.CreateApiResponse(result));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponseBuilder.CreateErrorApiResponse<CouponDto>(ex.Message,"Купон не создан"));
+        }
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteCoupon(Guid id)
+    {
+        try
+        {
+            var result = await _couponService.DeleteAsync(id);
+            await _unitOfWork.SaveChangesAsync();
             return Ok(ApiResponseBuilder.CreateApiResponse(result));
         }
         catch (Exception ex)
