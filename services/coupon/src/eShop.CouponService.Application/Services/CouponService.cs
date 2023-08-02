@@ -62,4 +62,12 @@ public class CouponService : ICouponService
         await _repository.Delete(coupon);
         return coupon;
     }
+
+    public async Task<CouponDto> UpdateAsync(CouponDto couponDto)
+    {
+        Coupon coupon = _mapper.Map<Coupon>(couponDto);
+        await _repository.UpdateAsync(coupon);
+        couponDto = _mapper.Map<CouponDto>(coupon);
+        return couponDto;
+    }
 }
