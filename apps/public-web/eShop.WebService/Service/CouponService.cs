@@ -27,7 +27,7 @@ public class CouponService : ICouponService
         return await _baseService.SendAsync(new RequestDto()
         {
             ApiType = SD.ApiType.DELETE,
-            Url = SD.CouponApiBase + "/api/coupon/" + id
+            Url = SD.CouponApiBase + "/api/coupon/deleteCoupon/" + id
         });
     }
 
