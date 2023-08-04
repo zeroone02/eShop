@@ -31,9 +31,6 @@ public class BaseService : IBaseService
             HttpResponseMessage? apiResponse = null;
             switch (requestDto.ApiType)
             {
-                case ApiType.GET:
-                    message.Method = HttpMethod.Get;
-                    break;
                 case ApiType.POST:
                     message.Method = HttpMethod.Post;
                     break;
