@@ -1,3 +1,4 @@
+using eShop.AuthService.Domain;
 using eShop.AuthService.EntityFrameworkCore;
 using eShop.DDD.Entity;
 using Microsoft.AspNetCore.Identity;
@@ -8,8 +9,9 @@ builder.Services.AddDbContext<IEfCoreDbContext, AuthServiceDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthServiceDbContext>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthServiceDbContext>()
     .AddDefaultTokenProviders();
 
 
