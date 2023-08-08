@@ -8,14 +8,12 @@ namespace eShop.AuthService.HttpApi.Host;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-
+    protected ResponseDto _response;
     public AuthController(IAuthService authService)
     {
         _authService = authService;
         _response = new();
     }
-
-    protected ResponseDto _response;
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
     {
