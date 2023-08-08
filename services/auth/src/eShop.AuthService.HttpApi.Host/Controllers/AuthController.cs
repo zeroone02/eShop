@@ -1,14 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using eShop.AuthService.Application.Contracts;
+using eShop.DDD.Application.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.AuthService.HttpApi.Host;
 [Route("api/auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {
-    [HttpPost("register")]
-    public async Task<IActionResult> Register()
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
     {
-        return Ok();
+        _authService = authService;
+        _response = new();
+    }
+
+    protected ResponseDto _response;
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
+    {
+        var errorMessage = await _authService.Register(model);
+        if(!string.IsNullOrEmpty(errorMessage))
+        {
+            _response.IsSuccess = false;
+            _response.Message = errorMessage;
+            return BadRequest(_response);
+        }
+        return Ok(_response);
     }
 
     [HttpPost("login")]

@@ -23,6 +23,8 @@
 	 
   <ItemGroup>
     <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
+    <ProjectReference Include="..\eShop.AuthService.Application.Contracts\eShop.AuthService.Application.Contracts.csproj" />
+    <ProjectReference Include="..\eShop.AuthService.Application\eShop.AuthService.Application.csproj" />
     <ProjectReference Include="..\eShop.AuthService.Domain\eShop.AuthService.Domain.csproj" />
     <ProjectReference Include="..\eShop.AuthService.EntityFrameworkCore\eShop.AuthService.EntityFrameworkCore.csproj" />
   </ItemGroup>
