@@ -1,6 +1,6 @@
 ﻿using static eShop.Web.Domain.Domain.Shared.SD;
 
-namespace eShop.WebUtility;
+namespace eShop.Web.Domain;
 public class RequestDto
 {
     public ApiType ApiType { get; set; } = ApiType.GET;

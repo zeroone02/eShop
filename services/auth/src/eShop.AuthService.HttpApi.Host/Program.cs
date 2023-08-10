@@ -1,3 +1,6 @@
+using eShop.AuthService.Application;
+using eShop.AuthService.Application.Contracts;
+using eShop.AuthService.Domain;
 using eShop.AuthService.EntityFrameworkCore;
 using eShop.DDD.Entity;
 using Microsoft.AspNetCore.Identity;
@@ -8,12 +11,14 @@ builder.Services.AddDbContext<IEfCoreDbContext, AuthServiceDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthServiceDbContext>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthServiceDbContext>()
     .AddDefaultTokenProviders();
 
-
 builder.Services.AddControllers();
+builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
