@@ -1,10 +1,8 @@
 ﻿using eShop.DDD.Application.Contracts;
 using eShop.Web.Application.Contracts;
-using eShop.Web.Domain.Domain.Shared;
-using eShop.WebUtility;
+using eShop.Web.Domain;
 using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using static eShop.Web.Domain.Domain.Shared.SD;
 

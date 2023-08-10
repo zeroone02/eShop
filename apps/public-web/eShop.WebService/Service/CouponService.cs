@@ -2,7 +2,6 @@
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain;
 using eShop.Web.Domain.Domain.Shared;
-using eShop.WebUtility;
 
 namespace eShop.Web.Application;
 public class CouponService : ICouponService
