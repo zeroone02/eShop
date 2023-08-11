@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
+    <ProjectReference Include="..\eShop.CouponService.Application.Contracts\eShop.CouponService.Application.Contracts.csproj" />
+    <ProjectReference Include="..\eShop.CouponService.Domain\eShop.CouponService.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

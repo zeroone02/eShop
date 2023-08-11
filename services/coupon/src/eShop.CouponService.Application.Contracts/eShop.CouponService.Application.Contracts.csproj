@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\eShop.DDD.Application.Contracts\eShop.DDD.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
+    <ProjectReference Include="..\eShop.CouponService.Domain\eShop.CouponService.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

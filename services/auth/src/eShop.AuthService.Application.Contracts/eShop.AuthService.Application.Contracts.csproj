@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\eShop.DDD.Application.Contracts\eShop.DDD.Application.Contracts.csproj" />
+    <ProjectReference Include="..\eShop.AuthService.Domain\eShop.AuthService.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
