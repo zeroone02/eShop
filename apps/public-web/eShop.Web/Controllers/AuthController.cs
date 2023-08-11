@@ -1,6 +1,7 @@
 ﻿using eShop.Web.Application.Contracts;
 using eShop.Web.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eShop.Web.Controllers;
 public class AuthController : Controller
@@ -22,6 +23,7 @@ public class AuthController : Controller
     [HttpGet]
     public IActionResult Register()
     {
+        var roleList = new List<SelectList>();
         return View();
     }
     [HttpGet]
