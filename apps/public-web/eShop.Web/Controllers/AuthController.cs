@@ -2,17 +2,24 @@
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain;
 using eShop.Web.Domain.Domain.Shared;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace eShop.Web.Controllers;
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
+    private readonly ITokenProvider _tokenProvider;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, ITokenProvider tokenProvider)
     {
         _authService = authService;
+        _tokenProvider = tokenProvider;
     }
     //
     [HttpGet]
@@ -20,6 +27,24 @@ public class AuthController : Controller
     {
         LoginRequestDto loginRequestDto = new();
         return View(loginRequestDto);
+    }
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginRequestDto obj)
+    {
+        ResponseDto responseDto = await _authService.LoginAsync(obj);
+        if (responseDto != null && responseDto.IsSuccess)
+        {
+            LoginResponseDto loginResponseDto = 
+                JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(responseDto.Result));
+            _tokenProvider.SetToken(loginResponseDto.Token);
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            ModelState.AddModelError("CustomError",responseDto.Message);
+            return View(obj);
+        }
+       
     }
 
     [HttpGet]
@@ -63,5 +88,11 @@ public class AuthController : Controller
     public IActionResult Logout()
     {
         return View();
+    }
+    public async Task SignInUser(LoginRequestDto model)
+    {
+        var handler = new JwtSecurityTokenHandler
+        var principal = ClaimsPrincipal()
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 }
