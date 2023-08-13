@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eShop.Web.Application.Contracts\eShop.Web.Application.Contracts.csproj" />
     <ProjectReference Include="..\eShop.Web.Domain\eShop.Web.Domain.csproj" />
     <ProjectReference Include="..\eShop.WebService\eShop.Web.Application.csproj" />

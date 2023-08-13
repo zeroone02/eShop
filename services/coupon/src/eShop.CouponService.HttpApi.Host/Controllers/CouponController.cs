@@ -1,12 +1,14 @@
 ﻿using eShop.CouponService.Application.Contracts;
 using eShop.DDD.Application.Contracts;
 using eShop.DDD.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.CouponService.HttpApi.Host.Controllers;
 
 [Route("api/coupon")]
 [ApiController]
+[Authorize]
 public class CouponController : ControllerBase
 {
     private ICouponService _couponService;
@@ -69,6 +71,7 @@ public class CouponController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Create([FromBody] CouponDto couponDto)
     {
         try
@@ -87,6 +90,7 @@ public class CouponController : ControllerBase
 
     [HttpDelete]
     [Route("deleteCoupon/{id}")]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Delete(Guid id)
     {
         try
@@ -103,6 +107,7 @@ public class CouponController : ControllerBase
         return _response;
     }
     [HttpPut]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Update([FromBody] CouponDto couponDto)
     {
         try

@@ -1,4 +1,6 @@
-﻿using eShop.Web.Models;
+﻿using eShop.Web.Domain.Domain.Shared;
+using eShop.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -16,7 +18,7 @@ public class HomeController : Controller
     {
         return View();
     }
-
+    [Authorize(Roles = SD.RoleAdmin)]
     public IActionResult Privacy()
     {
         return View();
