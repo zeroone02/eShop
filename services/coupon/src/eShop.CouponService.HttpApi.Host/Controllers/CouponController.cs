@@ -1,12 +1,14 @@
 ﻿using eShop.CouponService.Application.Contracts;
 using eShop.DDD.Application.Contracts;
 using eShop.DDD.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.CouponService.HttpApi.Host.Controllers;
 
 [Route("api/coupon")]
 [ApiController]
+[Authorize]
 public class CouponController : ControllerBase
 {
     private ICouponService _couponService;
