@@ -71,6 +71,7 @@ public class CouponController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Create([FromBody] CouponDto couponDto)
     {
         try
@@ -89,6 +90,7 @@ public class CouponController : ControllerBase
 
     [HttpDelete]
     [Route("deleteCoupon/{id}")]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Delete(Guid id)
     {
         try
@@ -105,6 +107,7 @@ public class CouponController : ControllerBase
         return _response;
     }
     [HttpPut]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Update([FromBody] CouponDto couponDto)
     {
         try
