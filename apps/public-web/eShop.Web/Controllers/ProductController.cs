@@ -15,7 +15,7 @@ public class ProductController : Controller
         _productService = productService;
     }
 
-    public async Task<IActionResult> productIndex()
+    public async Task<IActionResult> ProductIndex()
     {
         List<ProductDto>? list = new();
         ResponseDto? response = await _productService.GetAllProductAsync();
@@ -29,12 +29,12 @@ public class ProductController : Controller
         }
         return View(list);
     }
-    public async Task<IActionResult> productCreate()
+    public async Task<IActionResult> ProductCreate()
     {
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> productCreate(ProductDto model)
+    public async Task<IActionResult> ProductCreate(ProductDto model)
     {
         if (ModelState.IsValid)
         {
@@ -42,7 +42,7 @@ public class ProductController : Controller
             if (response != null && response.IsSuccess)
             {
                 TempData["success"] = "product created successfully";
-                return RedirectToAction(nameof(productIndex));
+                return RedirectToAction(nameof(ProductIndex));
             }
             else
             {
@@ -52,7 +52,7 @@ public class ProductController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> productDelete(Guid productId)
+    public async Task<IActionResult> ProductDelete(Guid productId)
     {
         ResponseDto? response = await _productService.GetProductByIdAsync(productId);
 
@@ -70,14 +70,14 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> productDelete(ProductDto productDto)
+    public async Task<IActionResult> ProductDelete(ProductDto productDto)
     {
         ResponseDto? response = await _productService.DeleteProductAsync(productDto.Id);
 
         if (response != null && response.IsSuccess)
         {
             TempData["success"] = "product deleted successfully";
-            return RedirectToAction(nameof(productIndex));
+            return RedirectToAction(nameof(ProductIndex));
         }
         else
         {
