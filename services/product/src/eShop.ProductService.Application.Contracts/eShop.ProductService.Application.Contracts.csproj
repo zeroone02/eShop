@@ -11,7 +11,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <ProjectReference Include="..\..\common\eShop.DDD.Application.Contracts\eShop.DDD.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
+    <ProjectReference Include="..\eShop.ProductService.Domain\eShop.ProductService.Domain.csproj" />
   </ItemGroup>
 
 </Project>
