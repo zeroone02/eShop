@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using eShop.ProductService.Application.Contracts;
 using eShop.ProductService.Domain;
+using eShop.ProductService.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,9 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //add genericRepository
+builder.Services.AddTransient<IRepository<Product, Guid>, Repository<Product, Guid>>();
 //add Services
+builder.Services.AddTransient<IProductService, ProductService>();
 //
 builder.Services.AddTransient<UnitOfWork>();
 

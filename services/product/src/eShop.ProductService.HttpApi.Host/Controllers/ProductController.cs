@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eShop.ProductService.HttpApi.Host.Controllers;
 
-[Route("api/Product")]
+[Route("api/product")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class ProductController : ControllerBase
 {
     private IProductService _ProductService;
@@ -56,7 +56,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Create([FromBody] ProductDto ProductDto)
     {
         try
@@ -75,7 +75,7 @@ public class ProductController : ControllerBase
 
     [HttpDelete]
     [Route("deleteProduct/{id}")]
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Delete(Guid id)
     {
         try
@@ -92,7 +92,7 @@ public class ProductController : ControllerBase
         return _response;
     }
     [HttpPut]
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     public async Task<ResponseDto> Update([FromBody] ProductDto ProductDto)
     {
         try
