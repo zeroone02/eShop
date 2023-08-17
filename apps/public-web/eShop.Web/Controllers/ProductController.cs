@@ -4,6 +4,7 @@ using eShop.Web.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using static System.Net.WebRequestMethods;
 
 namespace eShop.Web.Controllers;
 public class ProductController : Controller
@@ -29,6 +30,8 @@ public class ProductController : Controller
         }
         return View(list);
     }
+    //toDo
+    ///Добавить imageUrl во view
     public async Task<IActionResult> ProductCreate()
     {
         return View();
@@ -36,6 +39,10 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<IActionResult> ProductCreate(ProductDto model)
     {
+        //toDo
+        // свойства product из productService должны совпадать с product в eshop.Web 
+        model.Id = Guid.NewGuid();
+        model.ImageUrl = "https://ef";
         if (ModelState.IsValid)
         {
             ResponseDto? response = await _productService.CreateProductsAsync(model);
@@ -51,7 +58,7 @@ public class ProductController : Controller
         }
         return View(model);
     }
-
+    ///Добавить imageUrl во view
     public async Task<IActionResult> ProductDelete(Guid productId)
     {
         ResponseDto? response = await _productService.GetProductByIdAsync(productId);
@@ -86,6 +93,7 @@ public class ProductController : Controller
 
         return View(productDto);
     }
+    ///Добавить imageUrl во view
     public async Task<IActionResult> ProductEdit(Guid productId)
     {
         ResponseDto? response = await _productService.GetProductByIdAsync(productId);
