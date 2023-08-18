@@ -45,21 +45,21 @@ namespace eShop.CouponService.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a0f09697-1711-4bf5-b4d2-af154e68f2b2"),
+                            Id = new Guid("78dc2c06-15c5-4e15-bbd8-5f352d397ea9"),
                             CouponCode = "10OFF",
                             DiscountAmount = 10m,
                             MinAmount = 10
                         },
                         new
                         {
-                            Id = new Guid("4729a394-e5f7-4e0b-adc7-0b65f9f7f48f"),
+                            Id = new Guid("792bedc4-6eb8-4366-a4c7-b7589ad3980e"),
                             CouponCode = "20OFF",
                             DiscountAmount = 20m,
                             MinAmount = 40
                         },
                         new
                         {
-                            Id = new Guid("6543bb3f-d5eb-4077-8ffa-8b3ce5de8080"),
+                            Id = new Guid("0413f510-2336-4f22-b2fb-059eafc7f559"),
                             CouponCode = "30OFF",
                             DiscountAmount = 30m,
                             MinAmount = 600
