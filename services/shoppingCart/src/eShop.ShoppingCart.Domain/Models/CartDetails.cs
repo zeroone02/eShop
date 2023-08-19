@@ -10,4 +10,5 @@ public class CartDetails : Entity<Guid>
     public Guid ProductId { get; set; }
     [NotMapped]
     public ProductDto Product { get; set; }
+    public int Count { get; set; }
 }

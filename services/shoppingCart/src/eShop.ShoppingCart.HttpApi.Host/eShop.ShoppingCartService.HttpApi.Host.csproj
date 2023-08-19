@@ -19,14 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\common\eShop.DDD.Application.Contracts\eShop.DDD.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\eShop.ShoppingCart.Application.Contracts\eShop.ShoppingCartService.Application.Contracts.csproj" />
+    <ProjectReference Include="..\eShop.ShoppingCart.Application\eShop.ShoppingCartService.Application.csproj" />
+    <ProjectReference Include="..\eShop.ShoppingCart.Domain\eShop.ShoppingCartService.Domain.csproj" />
+    <ProjectReference Include="..\eShop.ShoppingCart.EntityFrameworkCore\eShop.ShoppingCartService.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 
