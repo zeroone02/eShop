@@ -26,9 +26,5 @@
     <ProjectReference Include="..\..\common\eShop.DDD.Application.Contracts\eShop.DDD.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\common\eShop.DDD.Entity\eShop.DDD.Entity.csproj" />
   </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
 
 </Project>
