@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eShop.ShoppingCartService.Domain;
 
 namespace eShop.ShoppingCartService.Application.Contracts;
 public class MappingConfig
@@ -7,8 +8,8 @@ public class MappingConfig
     {
         var mappingConfig = new MapperConfiguration(config =>
         {
-            //config.CreateMap<ProductDto, Product>();
-            //config.CreateMap<Product, ProductDto>();
+            config.CreateMap<CartHeader, CartHeaderDto>().ReverseMap();
+            config.CreateMap<CartDetails, CartDetailsDto>().ReverseMap();
         });
         return mappingConfig;
     }

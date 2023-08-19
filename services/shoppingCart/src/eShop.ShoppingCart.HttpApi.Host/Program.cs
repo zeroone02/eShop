@@ -18,7 +18,8 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //add genericRepository
-//builder.Services.AddTransient<IRepository<Product, Guid>, Repository<Product, Guid>>();
+builder.Services.AddTransient<IRepository<CartHeader, Guid>, Repository<CartHeader, Guid>>();
+builder.Services.AddTransient<IRepository<CartDetails, Guid>, Repository<CartDetails, Guid>>();
 //add Services
 //builder.Services.AddTransient<IProductService, ProductService>();
 //
@@ -65,18 +66,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-ApplyMigration();
 
 app.Run();
 
-void ApplyMigration()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var _db = scope.ServiceProvider.GetRequiredService<ShoppingCartServiceDbContext>();
-        if (_db.Database.GetPendingMigrations().Count() > 0)
-        {
-            _db.Database.Migrate();
-        }
-    }
-}
+
