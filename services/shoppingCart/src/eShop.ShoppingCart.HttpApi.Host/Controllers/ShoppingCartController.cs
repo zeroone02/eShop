@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eShop.DDD.Application.Contracts;
 using eShop.DDD.Entity;
+using eShop.ShoppingCartService.Application.Contracts;
 using eShop.ShoppingCartService.Domain;
 using eShop.ShoppingCartService.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,14 @@ public class ShoppingCartController : Controller
     private IMapper _mapper;
     private ResponseDto _response;
     private readonly ShoppingCartServiceDbContext _db;
-    public ShoppingCartController(UnitOfWork unitOfWork, IMapper mapper, ShoppingCartServiceDbContext db)
+    private IProductService _productService;
+    public ShoppingCartController(UnitOfWork unitOfWork, IMapper mapper, ShoppingCartServiceDbContext db, IProductService productService)
     {
         _unitOfWork = unitOfWork;
         _response = new ResponseDto();
         _mapper = mapper;
         _db = db;
+        _productService = productService;
     }
     [HttpGet("GetCart/{userId}")]
     public async Task<ResponseDto> GetCart(Guid userId)
@@ -34,8 +37,12 @@ public class ShoppingCartController : Controller
             cart.CartDetails = _mapper
                 .Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
                 .Where(u => u.CartHeaderId == cart.CartHeader.Id));
+
+            IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
+
             foreach (var item in cart.CartDetails)
             {
+                item.Product = productDtos.FirstOrDefault(u => u.Id == item.ProductId);
                 cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
             }
             _response.Result = cart;
