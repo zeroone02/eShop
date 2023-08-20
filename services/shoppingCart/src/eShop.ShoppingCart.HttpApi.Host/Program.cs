@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using eShop.ShoppingCartService.Application.Contracts;
 using eShop.ShoppingCartService.Domain;
 using eShop.ShoppingCartService.EntityFrameworkCore;
+using eShop.ShoppingCartService.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ builder.Services.AddDbContext<IEfCoreDbContext, ShoppingCartServiceDbContext>(op
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddHttpClient("Product",u => u.BaseAddress =
+new Uri(builder.Configuration["ServiceUrls:ProductAPI"]));
 //add genericRepository
 builder.Services.AddTransient<IRepository<CartHeader, Guid>, Repository<CartHeader, Guid>>();
 builder.Services.AddTransient<IRepository<CartDetails, Guid>, Repository<CartDetails, Guid>>();
