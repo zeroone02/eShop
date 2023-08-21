@@ -1,7 +1,7 @@
 ﻿using eShop.DDD.Application.Contracts;
 using eShop.Web.Application.Contracts;
-using eShop.Web.Domain;
 using eShop.Web.Domain.Domain.Shared;
+using eShop.Web.Domain.Dtos.authDto;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
