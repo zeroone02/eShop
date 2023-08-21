@@ -55,6 +55,7 @@ public class ShoppingCartController : Controller
                 if (coupon != null && cart.CartHeader.CartTotal > coupon.MinAmount)
                 {
                     cart.CartHeader.CartTotal -= coupon.DiscountAmount;
+                    cart.CartHeader.Discount = coupon.DiscountAmount;
                 }
             }
 
