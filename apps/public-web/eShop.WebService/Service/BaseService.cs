@@ -1,6 +1,6 @@
 ﻿using eShop.DDD.Application.Contracts;
 using eShop.Web.Application.Contracts;
-using eShop.Web.Domain.Dtos.authDto;
+using eShop.Web.Domain;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
