@@ -2,6 +2,7 @@
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain;
 using eShop.Web.Domain.Domain.Shared;
+using eShop.Web.Domain.Domain;
 
 namespace eShop.Web.Application;
 public class AuthService : IAuthService
