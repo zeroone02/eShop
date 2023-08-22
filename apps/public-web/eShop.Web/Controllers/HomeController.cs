@@ -60,25 +60,23 @@ public class HomeController : Controller
     [ActionName("ProductDetails")]
     public async Task<IActionResult> ProductDetails(ProductDto productDto)
     {
-        CartDto? cartDto = new()
+        CartDto cartDto = new CartDto()
         {
-            CartHeader = new CartHeaderDto()
+            CartHeader = new CartHeaderDto
             {
-                UserId = new Guid(User.Claims
-                .Where(u => u.Type == JwtClaimTypes.Subject)?
-                .FirstOrDefault()?.Value)
+                UserId = new Guid(User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value)
             }
         };
-        CartDetailsDto cartDetails = new()
+
+        CartDetailsDto cartDetails = new CartDetailsDto()
         {
             Count = productDto.Count,
-            ProductId = productDto.Id
+            ProductId = productDto.Id,
         };
-        List<CartDetailsDto> cartDetailsDtos = new()
-        {
-            cartDetails
-        };
+
+        List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
         cartDto.CartDetails = cartDetailsDtos;
+
         ResponseDto? response = await _shoppingCartService.UpsertCartAsync(cartDto);
 
         if (response != null && response.IsSuccess)
