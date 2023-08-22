@@ -13,10 +13,12 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IProductService _productService;
-    public HomeController(ILogger<HomeController> logger, IProductService productService)
+    IShoppingCartService _shoppingCartService;
+    public HomeController(ILogger<HomeController> logger, IProductService productService, IShoppingCartService shoppingCartService)
     {
         _logger = logger;
         _productService = productService;
+        _shoppingCartService = shoppingCartService;
     }
 
     public async Task<IActionResult> Index()

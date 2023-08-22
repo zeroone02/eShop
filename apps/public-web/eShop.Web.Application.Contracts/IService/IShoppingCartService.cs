@@ -2,7 +2,7 @@
 using eShop.Web.Domain;
 
 namespace eShop.Web.Application.Contracts;
-public interface IShoppingCartservice
+public interface IShoppingCartService
 {
     Task<ResponseDto?> GetCartByUserIdAsync(Guid userId);
     Task<ResponseDto?> UpsertCartAsync(CartDto cartDto);

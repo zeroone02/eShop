@@ -1,26 +1,50 @@
 ﻿using eShop.DDD.Application.Contracts;
 using eShop.Web.Domain;
+using eShop.Web.Domain.Domain.Shared;
 
 namespace eShop.Web.Application.Contracts;
-public class ShoppingCartService : IShoppingCartservice
+public class ShoppingCartService : IShoppingCartService
 {
-    public Task<ResponseDto?> ApplyCouponAsync(CartDto cartDto)
+    private readonly IBaseService _baseService;
+    public ShoppingCartService(IBaseService baseService)
     {
-        throw new NotImplementedException();
+        _baseService = baseService;
+    }
+    public async Task<ResponseDto?> ApplyCouponAsync(CartDto cartDto)
+    {
+        return await _baseService.SendAsync(new RequestDto()
+        {
+            ApiType = SD.ApiType.POST,
+            Data = cartDto,
+            Url = SD.ShoppingCartApiBase + "/api/cart/ApplyCoupon"
+        });
     }
 
-    public Task<ResponseDto?> GetCartByUserIdAsync(Guid userId)
+    public async Task<ResponseDto?> GetCartByUserIdAsync(Guid userId)
     {
-        throw new NotImplementedException();
+        return await _baseService.SendAsync(new RequestDto()
+        {
+            ApiType = SD.ApiType.GET,
+            Url = SD.ShoppingCartApiBase + "/api/cart/GetCart/" + userId
+        });
     }
 
-    public Task<ResponseDto?> RemoveFromCartAsync(Guid cartDetailsId)
+    public async Task<ResponseDto?> RemoveFromCartAsync(Guid cartDetailsId)
     {
-        throw new NotImplementedException();
+        return await _baseService.SendAsync(new RequestDto()
+        {
+            ApiType = SD.ApiType.POST,
+            Url = SD.ShoppingCartApiBase + "/api/cart/RemoveCoupon/" + cartDetailsId
+        });
     }
 
-    public Task<ResponseDto?> UpsertCartAsync(CartDto cartDto)
+    public async Task<ResponseDto?> UpsertCartAsync(CartDto cartDto)
     {
-        throw new NotImplementedException();
+        return await _baseService.SendAsync(new RequestDto()
+        {
+            ApiType = SD.ApiType.POST,
+            Data = cartDto,
+            Url = SD.ShoppingCartApiBase + "/api/cart/CartUpsert"
+        });
     }
 }
