@@ -37,14 +37,16 @@ public class ProductController : Controller
         return View();
     }
     [HttpPost]
+    //Доделать
     public async Task<IActionResult> ProductCreate(ProductDto model)
     {
         //toDo
         // свойства product из productService должны совпадать с product в eshop.Web 
         model.Id = Guid.NewGuid();
-        model.ImageUrl = "https://ef";
-        if (ModelState.IsValid)
-        {
+        model.ImageUrl = "https://placehold.co/600x400";
+        
+        //if (ModelState.IsValid)
+        //{
             ResponseDto? response = await _productService.CreateProductsAsync(model);
             if (response != null && response.IsSuccess)
             {
@@ -55,7 +57,7 @@ public class ProductController : Controller
             {
                 TempData["error"] = response?.Message;
             }
-        }
+        //}
         return View(model);
     }
     ///Добавить imageUrl во view
