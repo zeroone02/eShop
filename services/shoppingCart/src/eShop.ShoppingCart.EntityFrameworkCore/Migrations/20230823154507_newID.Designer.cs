@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using eShop.ShoppingCartService.EntityFrameworkCore;
@@ -11,9 +12,11 @@ using eShop.ShoppingCartService.EntityFrameworkCore;
 namespace eShop.ShoppingCartService.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(ShoppingCartServiceDbContext))]
-    partial class ShoppingCartServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230823154507_newID")]
+    partial class newID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

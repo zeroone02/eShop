@@ -21,10 +21,8 @@ public class ShoppingCartController : Controller
     }
     private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
     {
-        var userId = User.Claims
-            .Where(u => u.Type == JwtRegisteredClaimNames.Sub)?
-            .FirstOrDefault()?.Value;
-        ResponseDto? response = await _shoppingCartService.GetCartByUserIdAsync(new Guid(userId)); 
+        var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+        ResponseDto? response = await _shoppingCartService.GetCartByUserIdAsync(new Guid(userId));
         if (response != null & response.IsSuccess)
         {
             CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));

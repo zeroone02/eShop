@@ -28,7 +28,7 @@ public class ShoppingCartController : Controller
         _couponService = couponService;
     }
     [HttpGet("GetCart/{userId}")]
-    public async Task<ResponseDto> GetCart(Guid userId)
+    public async Task<ResponseDto> GetCart(string userId)
     {
         try
         {
@@ -36,8 +36,7 @@ public class ShoppingCartController : Controller
             {
                 CartHeader = _mapper.Map<CartHeaderDto>(_db.CartHeaders.First(u => u.UserId == userId))
             };
-            cart.CartDetails = _mapper
-                .Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
+            cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
                 .Where(u => u.CartHeaderId == cart.CartHeader.Id));
 
             IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
@@ -48,7 +47,7 @@ public class ShoppingCartController : Controller
                 cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
             }
 
-            //apply  coupon if any
+            //apply coupon if any
             if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
             {
                 CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
@@ -115,33 +114,30 @@ public class ShoppingCartController : Controller
         try
         {
             var cartHeaderFromDb = await _db.CartHeaders.AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == cartDto.CartHeader.Id);
-
+                .FirstOrDefaultAsync(u => u.UserId == cartDto.CartHeader.UserId);
             if (cartHeaderFromDb == null)
             {
                 //create header and details
                 CartHeader cartHeader = _mapper.Map<CartHeader>(cartDto.CartHeader);
                 _db.CartHeaders.Add(cartHeader);
-                await _unitOfWork.SaveChangesAsync();
+                await _db.SaveChangesAsync();
                 cartDto.CartDetails.First().CartHeaderId = cartHeader.Id;
                 _db.CartDetails.Add(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
-                await _unitOfWork.SaveChangesAsync();
-
+                await _db.SaveChangesAsync();
             }
             else
             {
                 //if header is not null
                 //check if details has same product
-                var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(u =>
-                u.ProductId == cartDto.CartDetails
-                .First().ProductId && u.CartHeaderId == cartHeaderFromDb.Id);
-
+                var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
+                    u => u.ProductId == cartDto.CartDetails.First().ProductId &&
+                    u.CartHeaderId == cartHeaderFromDb.Id);
                 if (cartDetailsFromDb == null)
                 {
                     //create cartdetails
                     cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.Id;
                     _db.CartDetails.Add(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
-                    await _unitOfWork.SaveChangesAsync();
+                    await _db.SaveChangesAsync();
                 }
                 else
                 {
@@ -150,7 +146,7 @@ public class ShoppingCartController : Controller
                     cartDto.CartDetails.First().CartHeaderId = cartDetailsFromDb.CartHeaderId;
                     cartDto.CartDetails.First().Id = cartDetailsFromDb.Id;
                     _db.CartDetails.Update(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
-                    await _unitOfWork.SaveChangesAsync();
+                    await _db.SaveChangesAsync();
                 }
             }
             _response.Result = cartDto;
