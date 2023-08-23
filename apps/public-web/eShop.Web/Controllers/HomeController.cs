@@ -64,7 +64,7 @@ public class HomeController : Controller
         {
             CartHeader = new CartHeaderDto
             {
-                UserId = new Guid(User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value)
+                UserId = User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value
             }
         };
 
