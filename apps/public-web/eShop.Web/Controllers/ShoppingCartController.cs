@@ -41,6 +41,17 @@ public class ShoppingCartController : Controller
         }
         return View();
     }
+    [HttpPost]
+    public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
+    {
+        ResponseDto? response = await _shoppingCartService.ApplyCouponAsync(cartDto);
+        if (response != null & response.IsSuccess)
+        {
+            TempData["success"] = "Cart updated successfully";
+            return RedirectToAction(nameof(CartIndex));
+        }
+        return View();
+    }
     private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
     {
         var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;

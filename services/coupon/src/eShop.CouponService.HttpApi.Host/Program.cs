@@ -28,6 +28,7 @@ builder.Services.AddTransient<ICouponService, CouponService>();
 builder.Services.AddTransient<UnitOfWork>();
 
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
@@ -54,6 +55,7 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 builder.AddAppAuthetication();
+
 builder.Services.AddAuthorization();
 var app = builder.Build();
 
@@ -77,7 +79,7 @@ void ApplyMigration()
     using (var scope = app.Services.CreateScope())
     {
         var _db = scope.ServiceProvider.GetRequiredService<CouponServiceDbContext>();
-        if (_db.Database.GetPendingMigrations().Count() > 0 )
+        if (_db.Database.GetPendingMigrations().Count() > 0)
         {
             _db.Database.Migrate();
         }

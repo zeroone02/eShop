@@ -2,6 +2,7 @@ using AutoMapper;
 using eShop.DDD.Entity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using eShop.ShoppingCartService.Application.Contracts;
 using eShop.ShoppingCartService.Domain;
@@ -18,13 +19,15 @@ builder.Services.AddDbContext<IEfCoreDbContext, ShoppingCartServiceDbContext>(op
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.AddScoped<IProductService,ProductService>();
 
 builder.Services.AddHttpClient("Product",u => u.BaseAddress =
 new Uri(builder.Configuration["ServiceUrls:ProductAPI"]));
+
 builder.Services.AddHttpClient("Coupon", u => u.BaseAddress =
 new Uri(builder.Configuration["ServiceUrls:CouponAPI"]));
+
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 
 //add genericRepository

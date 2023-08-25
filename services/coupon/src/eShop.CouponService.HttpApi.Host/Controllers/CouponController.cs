@@ -8,7 +8,6 @@ namespace eShop.CouponService.HttpApi.Host.Controllers;
 
 [Route("api/coupon")]
 [ApiController]
-[Authorize]
 public class CouponController : ControllerBase
 {
     private ICouponService _couponService;
@@ -38,6 +37,9 @@ public class CouponController : ControllerBase
     }
     [HttpGet]
     [Route("GetByCode/{code}")]
+    //[Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "CUSTOMER")]
+    //Не работает авторизация, исправить
     public async Task<ResponseDto> GetByCode(string code)
     {
         try

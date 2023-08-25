@@ -20,7 +20,7 @@ public class AuthService : IAuthService
         {
             ApiType = SD.ApiType.POST,
             Data = registrationRequestDto,
-            Url = SD.AuthApiBase + "/api/auth/AssignRole"
+            Url = SD.AuthAPIBase + "/api/auth/AssignRole"
         });
     }
 
@@ -30,7 +30,7 @@ public class AuthService : IAuthService
         {
             ApiType = SD.ApiType.POST,
             Data = loginRequestDto,
-            Url = SD.AuthApiBase + "/api/auth/login"
+            Url = SD.AuthAPIBase + "/api/auth/login"
         },withBearer:false);
     }
 
@@ -40,7 +40,7 @@ public class AuthService : IAuthService
         {
             ApiType = SD.ApiType.POST,
             Data = registrationRequestDto,
-            Url = SD.AuthApiBase + "/api/auth/register"
+            Url = SD.AuthAPIBase + "/api/auth/register"
         }, withBearer: false);
     }
 }

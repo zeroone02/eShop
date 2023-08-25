@@ -18,14 +18,14 @@ public class CouponService : ICouponService
     {
         var client = _httpClientFactory.CreateClient("Coupon");
         var response = await client.GetAsync($"/api/coupon/GetByCode/{couponCode}");
-        var apiContent = await response.Content.ReadAsStringAsync();
-        var resp = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-        if (resp.IsSuccess)
+        var apiContet = await response.Content.ReadAsStringAsync();
+        var resp = JsonConvert.DeserializeObject<ResponseDto>(apiContet);
+        if (resp != null && resp.IsSuccess)
         {
             return JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(resp.Result));
         }
         return new CouponDto();
     }
 
-   
+
 }

@@ -17,7 +17,7 @@ public class ProductService : IProductService
         {
             ApiType = SD.ApiType.POST,
             Data = productDto,
-            Url = SD.ProductApiBase + "/api/product"
+            Url = SD.ProductAPIBase + "/api/product"
         });
     }
 
@@ -26,7 +26,7 @@ public class ProductService : IProductService
         return await _baseService.SendAsync(new RequestDto()
         {
             ApiType = SD.ApiType.DELETE,
-            Url = SD.ProductApiBase + "/api/product/deleteProduct/" + id
+            Url = SD.ProductAPIBase + "/api/product/deleteProduct/" + id
         });
     }
 
@@ -35,7 +35,7 @@ public class ProductService : IProductService
         return await _baseService.SendAsync(new RequestDto()
         {
             ApiType = SD.ApiType.GET,
-            Url = SD.ProductApiBase + "/api/product"
+            Url = SD.ProductAPIBase + "/api/product"
         });
     }
 
@@ -44,7 +44,7 @@ public class ProductService : IProductService
         return await _baseService.SendAsync(new RequestDto()
         {
             ApiType = SD.ApiType.GET,
-            Url = SD.ProductApiBase + "/api/product/GetById/" + id
+            Url = SD.ProductAPIBase + "/api/product/GetById/" + id
         });
     }
 
@@ -54,7 +54,7 @@ public class ProductService : IProductService
         {
             ApiType = SD.ApiType.PUT,
             Data = productDto,
-            Url = SD.ProductApiBase + "/api/product"
+            Url = SD.ProductAPIBase + "/api/product"
         });
     }
 }
