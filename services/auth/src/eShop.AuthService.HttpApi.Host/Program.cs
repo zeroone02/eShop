@@ -1,4 +1,4 @@
-using eShop.AuthService.Application;
+    using eShop.AuthService.Application;
 using eShop.AuthService.Application.Contracts;
 using eShop.AuthService.Domain;
 using eShop.AuthService.EntityFrameworkCore;

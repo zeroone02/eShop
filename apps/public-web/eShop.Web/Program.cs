@@ -1,4 +1,4 @@
-using eShop.Web.Application;
+ using eShop.Web.Application;
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain.Domain.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
