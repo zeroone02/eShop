@@ -2,7 +2,7 @@
 
 
 namespace eShop.DDD.Entity;
-public interface IRepository<TEntity, TKey> where TEntity : Entity<TKey>
+public interface IRepository<TEntity, TKey> where TEntity : EntityDto<TKey>
 {
     Task<TEntity> InsertAsync(TEntity entity);
     Task Delete(TEntity entity);

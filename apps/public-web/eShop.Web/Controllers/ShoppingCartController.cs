@@ -19,10 +19,43 @@ public class ShoppingCartController : Controller
     {
         return View(await LoadCartDtoBasedOnLoggedInUser());
     }
+    public async Task<IActionResult> Remove(Guid id)
+    {
+        var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+        ResponseDto? response = await _shoppingCartService.RemoveFromCartAsync(id);
+        if (response != null & response.IsSuccess)
+        {
+            TempData["success"] = "Cart updated successfully";
+            return RedirectToAction(nameof(CartIndex));
+        }
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
+    {
+        ResponseDto? response = await _shoppingCartService.ApplyCouponAsync(cartDto);
+        if (response != null & response.IsSuccess)
+        {
+            TempData["success"] = "Cart updated successfully";
+            return RedirectToAction(nameof(CartIndex));
+        }
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
+    {
+        ResponseDto? response = await _shoppingCartService.ApplyCouponAsync(cartDto);
+        if (response != null & response.IsSuccess)
+        {
+            TempData["success"] = "Cart updated successfully";
+            return RedirectToAction(nameof(CartIndex));
+        }
+        return View();
+    }
     private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
     {
         var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
-        ResponseDto? response = await _shoppingCartService.GetCartByUserIdAsync(new Guid(userId));
+        ResponseDto? response = await _shoppingCartService.GetCartByUserIdAsync(userId);
         if (response != null & response.IsSuccess)
         {
             CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));

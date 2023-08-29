@@ -27,7 +27,7 @@ public class BaseService : IBaseService
             if (withBearer)
             {
                 var token = _tokenProvider.GetToken();
-                message.Headers.Add("Authorization",$"Bearer {token}");
+                message.Headers.Add("Authorization", $"Bearer {token}");
             }
 
             message.RequestUri = new Uri(requestDto.Url);
@@ -36,48 +36,35 @@ public class BaseService : IBaseService
                 message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
             }
             HttpResponseMessage? apiResponse = null;
+
             switch (requestDto.ApiType)
             {
                 case ApiType.POST:
                     message.Method = HttpMethod.Post;
                     break;
-                case ApiType.PUT:
-                    message.Method = HttpMethod.Put;
-                    break;
                 case ApiType.DELETE:
                     message.Method = HttpMethod.Delete;
+                    break;
+                case ApiType.PUT:
+                    message.Method = HttpMethod.Put;
                     break;
                 default:
                     message.Method = HttpMethod.Get;
                     break;
             }
+
             apiResponse = await client.SendAsync(message);
+
             switch (apiResponse.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    return new()
-                    {
-                        IsSuccess = false,
-                        Message = "Not Found"
-                    };
+                    return new() { IsSuccess = false, Message = "Not Found" };
                 case HttpStatusCode.Forbidden:
-                    return new()
-                    {
-                        IsSuccess = false,
-                        Message = "Access Denied"
-                    };
+                    return new() { IsSuccess = false, Message = "Access Denied" };
                 case HttpStatusCode.Unauthorized:
-                    return new()
-                    {
-                        IsSuccess = false,
-                        Message = "Unauthorized"
-                    };
+                    return new() { IsSuccess = false, Message = "Unauthorized" };
                 case HttpStatusCode.InternalServerError:
-                    return new()
-                    {
-                        IsSuccess = false,
-                        Message = "Internal Server Error"
-                    };
+                    return new() { IsSuccess = false, Message = "Internal Server Error" };
                 default:
                     var apiContent = await apiResponse.Content.ReadAsStringAsync();
                     var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
@@ -86,10 +73,10 @@ public class BaseService : IBaseService
         }
         catch (Exception ex)
         {
-            var dto = new ResponseDto()
+            var dto = new ResponseDto
             {
-                IsSuccess = false,
-                Message = ex.Message.ToString()
+                Message = ex.Message.ToString(),
+                IsSuccess = false
             };
             return dto;
         }

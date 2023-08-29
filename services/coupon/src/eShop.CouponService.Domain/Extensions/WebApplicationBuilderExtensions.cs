@@ -8,6 +8,7 @@ using System.Text;
 namespace eShop.CouponService.Domain;
 public static class WebApplicationBuilderExtensions
 {
+
     public static WebApplicationBuilder AddAppAuthetication(this WebApplicationBuilder builder)
     {
         var settingsSection = builder.Configuration.GetSection("ApiSettings");
@@ -17,6 +18,7 @@ public static class WebApplicationBuilderExtensions
         var audience = settingsSection.GetValue<string>("Audience");
 
         var key = Encoding.ASCII.GetBytes(secret);
+
 
         builder.Services.AddAuthentication(x =>
         {
@@ -34,6 +36,7 @@ public static class WebApplicationBuilderExtensions
                 ValidateAudience = true
             };
         });
-       return builder;
+
+        return builder;
     }
 }

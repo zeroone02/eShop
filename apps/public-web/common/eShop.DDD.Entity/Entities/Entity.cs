@@ -1,8 +1,8 @@
 ﻿namespace eShop.DDD.Entity;
-public abstract class Entity<T> : IEntity<T>
+public abstract class EntityDto<T> : IEntity<T>
 {
-    public Entity() { }
-    public Entity(T id)
+    public EntityDto() { }
+    public EntityDto(T id)
     {
         Id = id;
     }

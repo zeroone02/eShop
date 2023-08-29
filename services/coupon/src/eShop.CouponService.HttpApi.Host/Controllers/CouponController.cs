@@ -38,6 +38,7 @@ public class CouponController : ControllerBase
     }
     [HttpGet]
     [Route("GetByCode/{code}")]
+    
     public async Task<ResponseDto> GetByCode(string code)
     {
         try

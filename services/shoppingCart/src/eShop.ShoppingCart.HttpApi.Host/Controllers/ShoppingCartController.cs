@@ -40,25 +40,40 @@ public class ShoppingCartController : Controller
                 .Where(u => u.CartHeaderId == cart.CartHeader.Id));
 
             IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
-
+            //
             foreach (var item in cart.CartDetails)
             {
                 item.Product = productDtos.FirstOrDefault(u => u.Id == item.ProductId);
-                cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
+                if (item.Product == null)
+                {
+                    await RemoveCart(item.Id);
+                }
+            }
+            //fix bag
+            CartDto newCart = new()
+            {
+                CartHeader = _mapper.Map<CartHeaderDto>(_db.CartHeaders.First(u => u.UserId == userId))
+            };
+            newCart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
+                .Where(u => u.CartHeaderId == newCart.CartHeader.Id));
+            foreach (var newItem in newCart.CartDetails)
+            {
+                newItem.Product = productDtos.FirstOrDefault(u => u.Id == newItem.ProductId);
+                newCart.CartHeader.CartTotal += (newItem.Count * newItem.Product.Price);
             }
 
             //apply coupon if any
-            if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+            if (!string.IsNullOrEmpty(newCart.CartHeader.CouponCode))
             {
-                CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
-                if (coupon != null && cart.CartHeader.CartTotal > coupon.MinAmount)
+                CouponDto coupon = await _couponService.GetCoupon(newCart.CartHeader.CouponCode);
+                if (coupon != null && newCart.CartHeader.CartTotal > coupon.MinAmount)
                 {
-                    cart.CartHeader.CartTotal -= coupon.DiscountAmount;
-                    cart.CartHeader.Discount = coupon.DiscountAmount;
+                    newCart.CartHeader.CartTotal -= coupon.DiscountAmount;
+                    newCart.CartHeader.Discount = coupon.DiscountAmount;
                 }
             }
 
-            _response.Result = cart;
+            _response.Result = newCart;
         }
         catch (Exception ex)
         {

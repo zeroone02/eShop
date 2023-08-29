@@ -1,4 +1,4 @@
-using eShop.Web.Application;
+ using eShop.Web.Application;
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain.Domain.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,10 +13,10 @@ builder.Services.AddHttpClient<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddHttpClient<ICouponService,CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
-SD.ShoppingCartApiBase = builder.Configuration["ServiceUrls:ShoppingCartAPI"];
-SD.CouponApiBase = builder.Configuration["ServiceUrls:CouponAPI"];
-SD.AuthApiBase = builder.Configuration["ServiceUrls:AuthAPI"];
-SD.ProductApiBase = builder.Configuration["ServiceUrls:ProductAPI"];
+SD.ShoppingCartAPIBase = builder.Configuration["ServiceUrls:ShoppingCartAPI"];
+SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
+SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
+SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();

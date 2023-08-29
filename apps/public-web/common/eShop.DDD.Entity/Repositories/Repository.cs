@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq.Expressions;
 
 namespace eShop.DDD.Entity;
-public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey>
+public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : EntityDto<TKey>
 {
     private  readonly IEfCoreDbContext _dbContext;
     public Repository(IServiceProvider serviceProvider)

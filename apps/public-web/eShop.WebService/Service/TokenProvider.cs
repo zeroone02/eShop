@@ -2,9 +2,9 @@
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain.Domain.Shared;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 
 namespace eShop.Web.Application;
+
 public class TokenProvider : ITokenProvider
 {
     private readonly IHttpContextAccessor _contextAccessor;
@@ -13,6 +13,7 @@ public class TokenProvider : ITokenProvider
     {
         _contextAccessor = contextAccessor;
     }
+
 
     public void ClearToken()
     {
@@ -31,3 +32,4 @@ public class TokenProvider : ITokenProvider
         _contextAccessor.HttpContext?.Response.Cookies.Append(SD.TokenCookie, token);
     }
 }
+
