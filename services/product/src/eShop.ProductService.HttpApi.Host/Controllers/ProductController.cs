@@ -62,18 +62,27 @@ public class ProductController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "ADMIN")]
-    public  ResponseDto Create(ProductDto ProductDto)
+    public  ResponseDto Create([FromForm] ProductDto productDto)
     {
         try
         {
-            Product product = _mapper.Map<Product>(ProductDto);
+
+            Product product = new();
+            product.Id = productDto.Id;
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.CategoryName = productDto.CategoryName;
+            product.ImageLocalPath = productDto.ImageLocalPath;
+            product.ImageUrl = productDto.ImageUrl;
+
             _db.Products.Add(product);
             _db.SaveChanges();
 
-            if (ProductDto.Image != null)
+            if (productDto.Image != null)
             {
 
-                string fileName = product.Id + Path.GetExtension(ProductDto.Image.FileName);
+                string fileName = product.Id + Path.GetExtension(productDto.Image.FileName);
                 string filePath = @"wwwroot\ProductImages\" + fileName;
 
                 //I have added the if condition to remove the any image with same name if that exist in the folder by any change
@@ -87,7 +96,7 @@ public class ProductController : ControllerBase
                 var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
                 using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
                 {
-                    ProductDto.Image.CopyTo(fileStream);
+                    productDto.Image.CopyTo(fileStream);
                 }
                 var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
                 product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
@@ -99,7 +108,9 @@ public class ProductController : ControllerBase
             }
             _db.Products.Update(product);
             _db.SaveChanges();
-            _response.Result = _mapper.Map<ProductDto>(product);
+            
+          
+            _response.Result = product;
         }
         catch (Exception ex)
         {

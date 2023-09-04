@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="Properties\ServiceDependencies\MangoServicesProductAPI - Web Deploy\profile.arm.json" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
@@ -23,6 +27,10 @@
     <ProjectReference Include="..\eShop.ProductService.Application\eShop.ProductService.Application.csproj" />
     <ProjectReference Include="..\eShop.ProductService.Domain\eShop.ProductService.Domain.csproj" />
     <ProjectReference Include="..\eShop.ProductService.EntityFrameworkCore\eShop.ProductService.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\ProductImages\" />
   </ItemGroup>
 
 
