@@ -61,7 +61,7 @@ public class BaseService : IBaseService
                         content.Add(new StringContent(value == null ? "" : value.ToString()), prop.Name);
                     }
                 }
-                message.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+                message.Content = content;
             }
             else
             {
