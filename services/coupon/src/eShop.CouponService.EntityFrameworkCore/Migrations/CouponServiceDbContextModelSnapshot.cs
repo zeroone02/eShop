@@ -32,8 +32,8 @@ namespace eShop.CouponService.EntityFrameworkCore.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("DiscountAmount")
-                        .HasColumnType("numeric");
+                    b.Property<double>("DiscountAmount")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("MinAmount")
                         .HasColumnType("integer");
@@ -45,23 +45,23 @@ namespace eShop.CouponService.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a0f09697-1711-4bf5-b4d2-af154e68f2b2"),
+                            Id = new Guid("d3543bf6-1e5a-44ca-b5bc-13f8b4b494d4"),
                             CouponCode = "10OFF",
-                            DiscountAmount = 10m,
+                            DiscountAmount = 10.0,
                             MinAmount = 10
                         },
                         new
                         {
-                            Id = new Guid("4729a394-e5f7-4e0b-adc7-0b65f9f7f48f"),
+                            Id = new Guid("96de9400-b69d-4773-b63f-b579595bae74"),
                             CouponCode = "20OFF",
-                            DiscountAmount = 20m,
+                            DiscountAmount = 20.0,
                             MinAmount = 40
                         },
                         new
                         {
-                            Id = new Guid("6543bb3f-d5eb-4077-8ffa-8b3ce5de8080"),
+                            Id = new Guid("bf5747d3-288a-46f4-839d-30d1154f4aa3"),
                             CouponCode = "30OFF",
-                            DiscountAmount = 30m,
+                            DiscountAmount = 30.0,
                             MinAmount = 600
                         });
                 });

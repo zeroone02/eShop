@@ -1,14 +1,20 @@
-﻿namespace eShop.DDD.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+
+namespace eShop.DDD.Entity;
 public class UnitOfWork
 {
-    private IEfCoreDbContext _db;
-
-    public UnitOfWork(IEfCoreDbContext db)
+    private readonly IEfCoreDbContext _dbContext;
+    public IServiceProvider ServiceProvider { get; }
+    public UnitOfWork(IServiceProvider serviceProvider)
     {
-        db = _db;
+        ServiceProvider = serviceProvider;
+        _dbContext = ServiceProvider.GetService<IEfCoreDbContext>();
     }
-    public void SaveChangesAsync()
+
+    public async  Task SaveChangesAsync()
     {
-        _db.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 }

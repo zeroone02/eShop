@@ -2,6 +2,7 @@
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain;
 using eShop.Web.Domain.Domain.Shared;
+using eShop.Web.Domain.Domain;
 
 namespace eShop.Web.Application;
 public class AuthService : IAuthService
@@ -19,7 +20,7 @@ public class AuthService : IAuthService
         {
             ApiType = SD.ApiType.POST,
             Data = registrationRequestDto,
-            Url = SD.AuthApiBase + "/api/auth/AssignRole"
+            Url = SD.AuthAPIBase + "/api/auth/AssignRole"
         });
     }
 
@@ -29,8 +30,8 @@ public class AuthService : IAuthService
         {
             ApiType = SD.ApiType.POST,
             Data = loginRequestDto,
-            Url = SD.AuthApiBase + "/api/auth/login"
-        });
+            Url = SD.AuthAPIBase + "/api/auth/login"
+        },withBearer:false);
     }
 
     public async Task<ResponseDto?> RegisterAsync(RegistrationRequestDto registrationRequestDto)
@@ -39,7 +40,7 @@ public class AuthService : IAuthService
         {
             ApiType = SD.ApiType.POST,
             Data = registrationRequestDto,
-            Url = SD.AuthApiBase + "/api/auth/register"
-        });
+            Url = SD.AuthAPIBase + "/api/auth/register"
+        }, withBearer: false);
     }
 }

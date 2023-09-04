@@ -14,7 +14,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
 
     public IServiceProvider ServiceProvider { get; }
 
-    public Task DeleteAsync(TEntity entity)
+    public Task Delete(TEntity entity)
     {
         _dbContext.Set<TEntity>().Remove(entity);
         return Task.CompletedTask;
@@ -41,17 +41,16 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
     public async Task<TEntity> InsertAsync(TEntity entity)
     {
         var entry = await _dbContext.Set<TEntity>().AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
         return entry.Entity;
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         var entry = _dbContext.Update(entity);
-        return Task.FromResult(entry.Entity);
+        return await Task.FromResult(entry.Entity);
     }
 
-    public IQueryable<TEntity> WithDetailsAsync(params Expression<Func<TEntity, object>>[] func)
+    public  IQueryable<TEntity> WithDetails(params Expression<Func<TEntity, object>>[] func)
     {
         var dbSet = _dbContext.Set<TEntity>();
         IQueryable<TEntity> queryable = dbSet;

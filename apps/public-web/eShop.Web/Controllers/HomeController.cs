@@ -1,22 +1,102 @@
-﻿using eShop.Web.Models;
+﻿using eShop.DDD.Application.Contracts;
+using eShop.Web.Application.Contracts;
+using eShop.Web.Domain;
+using eShop.Web.Domain.Domain.Shared;
+using eShop.Web.Models;
+using IdentityModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace eShop.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IProductService _productService;
+    IShoppingCartService _shoppingCartService;
+    public HomeController(ILogger<HomeController> logger, IProductService productService, IShoppingCartService shoppingCartService)
     {
         _logger = logger;
+        _productService = productService;
+        _shoppingCartService = shoppingCartService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+		List<ProductDto>? list = new();
+
+		ResponseDto? response = await _productService.GetAllProductAsync();
+
+		if (response != null && response.IsSuccess)
+		{
+			list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+		}
+		else
+		{
+			TempData["error"] = response?.Message;
+		}
+
+		return View(list);
+	}
+    [Authorize]
+    public async Task<IActionResult> ProductDetails(Guid id)
+    {
+        ProductDto? model = new();
+
+        ResponseDto? response = await _productService.GetProductByIdAsync(id);
+
+        if (response != null && response.IsSuccess)
+        {
+            model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+        }
+        else
+        {
+            TempData["error"] = response?.Message;
+        }
+
+        return View(model);
     }
 
+    [Authorize]
+    [HttpPost]
+    [ActionName("ProductDetails")]
+    public async Task<IActionResult> ProductDetails(ProductDto productDto)
+    {
+        CartDto cartDto = new CartDto()
+        {
+            CartHeader = new CartHeaderDto
+            {
+                UserId = User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value
+            }
+        };
+
+        CartDetailsDto cartDetails = new CartDetailsDto()
+        {
+            Count = productDto.Count,
+            ProductId = productDto.Id,
+        };
+
+        List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
+        cartDto.CartDetails = cartDetailsDtos;
+
+        ResponseDto? response = await _shoppingCartService.UpsertCartAsync(cartDto);
+
+        if (response != null && response.IsSuccess)
+        {
+            TempData["success"] = "Item has been added to the Shopping Cart";
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            TempData["error"] = response?.Message;
+        }
+
+        return View(productDto);
+    }
+
+
+    [Authorize(Roles = SD.RoleAdmin)]
     public IActionResult Privacy()
     {
         return View();
