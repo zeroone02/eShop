@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using eShop.ProductService.EntityFrameworkCore;
@@ -11,9 +12,11 @@ using eShop.ProductService.EntityFrameworkCore;
 namespace eShop.ProductService.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(ProductServiceDbContext))]
-    partial class ProductServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230904081249_IsMarriedToUserAdded1")]
+    partial class IsMarriedToUserAdded1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

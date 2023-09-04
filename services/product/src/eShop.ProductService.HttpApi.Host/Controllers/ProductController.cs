@@ -3,6 +3,9 @@ using eShop.DDD.Application.Contracts;
 using eShop.DDD.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using eShop.ProductService.Domain;
+using AutoMapper;
+using eShop.ProductService.EntityFrameworkCore;
 
 namespace eShop.ProductService.HttpApi.Host.Controllers;
 
@@ -13,11 +16,14 @@ public class ProductController : ControllerBase
     private IProductService _ProductService;
     private UnitOfWork _unitOfWork;
     private ResponseDto _response;
-    public ProductController(IProductService ProductService, UnitOfWork unitOfWork)
+    private ProductServiceDbContext _db;
+    private IMapper _mapper;
+    public ProductController(IProductService ProductService, UnitOfWork unitOfWork, ProductServiceDbContext db)
     {
         _ProductService = ProductService;
         _unitOfWork = unitOfWork;
         _response = new ResponseDto();
+        _db = db;
     }
     [HttpGet]
     public async Task<ResponseDto> GetList()
@@ -56,13 +62,44 @@ public class ProductController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "ADMIN")]
-    public async Task<ResponseDto> Create([FromBody] ProductDto ProductDto)
+    public  ResponseDto Create(ProductDto ProductDto)
     {
         try
         {
-            var result = await _ProductService.AddAsync(ProductDto);
-            await _unitOfWork.SaveChangesAsync();
-            _response.Result = result;
+            Product product = _mapper.Map<Product>(ProductDto);
+            _db.Products.Add(product);
+            _db.SaveChanges();
+
+            if (ProductDto.Image != null)
+            {
+
+                string fileName = product.Id + Path.GetExtension(ProductDto.Image.FileName);
+                string filePath = @"wwwroot\ProductImages\" + fileName;
+
+                //I have added the if condition to remove the any image with same name if that exist in the folder by any change
+                var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+                FileInfo file = new FileInfo(directoryLocation);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+
+                var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+                using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                {
+                    ProductDto.Image.CopyTo(fileStream);
+                }
+                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
+                product.ImageLocalPath = filePath;
+            }
+            else
+            {
+                product.ImageUrl = "https://placehold.co/600x400";
+            }
+            _db.Products.Update(product);
+            _db.SaveChanges();
+            _response.Result = _mapper.Map<ProductDto>(product);
         }
         catch (Exception ex)
         {
@@ -79,9 +116,18 @@ public class ProductController : ControllerBase
     {
         try
         {
-            var result = await _ProductService.DeleteAsync(id);
-            await _unitOfWork.SaveChangesAsync();
-            _response.Result = result;
+            Product obj = _db.Products.First(u => u.Id == id);
+            if (!string.IsNullOrEmpty(obj.ImageLocalPath))
+            {
+                var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), obj.ImageLocalPath);
+                FileInfo file = new FileInfo(oldFilePathDirectory);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+            }
+            _db.Products.Remove(obj);
+            _db.SaveChanges();
         }
         catch (Exception ex)
         {
@@ -89,6 +135,7 @@ public class ProductController : ControllerBase
             _response.Message = ex.Message;
         }
         return _response;
+
     }
     [HttpPut]
     [Authorize(Roles = "ADMIN")]
@@ -96,9 +143,37 @@ public class ProductController : ControllerBase
     {
         try
         {
-            var result = await _ProductService.UpdateAsync(ProductDto);
-            await _unitOfWork.SaveChangesAsync();
-            _response.Result = result;
+            Product product = _mapper.Map<Product>(ProductDto);
+
+            if (ProductDto.Image != null)
+            {
+                if (!string.IsNullOrEmpty(product.ImageLocalPath))
+                {
+                    var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), product.ImageLocalPath);
+                    FileInfo file = new FileInfo(oldFilePathDirectory);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
+
+                string fileName = product.Id + Path.GetExtension(ProductDto.Image.FileName);
+                string filePath = @"wwwroot\ProductImages\" + fileName;
+                var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+                using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                {
+                    ProductDto.Image.CopyTo(fileStream);
+                }
+                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
+                product.ImageLocalPath = filePath;
+            }
+
+
+            _db.Products.Update(product);
+            _db.SaveChanges();
+
+            _response.Result = _mapper.Map<ProductDto>(product);
         }
         catch (Exception ex)
         {

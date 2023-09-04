@@ -8,9 +8,8 @@ public class MappingConfig
     {
         var mappingConfig = new MapperConfiguration(config =>
         {
-            config.CreateMap<ProductDto, Product>();
-            config.CreateMap<Product, ProductDto>();
-        });
+			config.CreateMap<ProductDto, Product>().ReverseMap();
+		});
         return mappingConfig;
     }
 }

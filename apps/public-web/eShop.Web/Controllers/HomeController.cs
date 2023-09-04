@@ -24,18 +24,21 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        List<ProductDto>? list = new();
-        ResponseDto? response = await _productService.GetAllProductAsync();
-        if (response != null && response.IsSuccess)
-        {
-            list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
-        }
-        else
-        {
-            TempData["error"] = response?.Message;
-        }
-        return View(list);
-    }
+		List<ProductDto>? list = new();
+
+		ResponseDto? response = await _productService.GetAllProductAsync();
+
+		if (response != null && response.IsSuccess)
+		{
+			list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+		}
+		else
+		{
+			TempData["error"] = response?.Message;
+		}
+
+		return View(list);
+	}
     [Authorize]
     public async Task<IActionResult> ProductDetails(Guid id)
     {
