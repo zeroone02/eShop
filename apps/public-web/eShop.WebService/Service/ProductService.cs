@@ -2,7 +2,7 @@
 using eShop.Web.Application.Contracts;
 using eShop.Web.Domain;
 using eShop.Web.Domain.Domain.Shared;
-
+using Microsoft.AspNetCore.Http;
 namespace eShop.Web.Application;
 public class ProductService : IProductService
 {
@@ -11,33 +11,34 @@ public class ProductService : IProductService
     {
         _baseService = baseService;
     }
-    public async Task<ResponseDto?> CreateProductsAsync(ProductDto productDto)
-    {
-        return await _baseService.SendAsync(new RequestDto()
-        {
-            ApiType = SD.ApiType.POST,
-            Data = productDto,
-            Url = SD.ProductAPIBase + "/api/product"
-        });
-    }
+	public async Task<ResponseDto?> CreateProductsAsync(ProductDto productDto)
+	{
+		return await _baseService.SendAsync(new RequestDto()
+		{
+			ApiType = SD.ApiType.POST,
+			Data = productDto,
+			Url = SD.ProductAPIBase + "/api/product",
+			ContentType = SD.ContentType.MultipartFormData
+		});
+	}
 
-    public async Task<ResponseDto?> DeleteProductAsync(Guid id)
-    {
-        return await _baseService.SendAsync(new RequestDto()
-        {
-            ApiType = SD.ApiType.DELETE,
-            Url = SD.ProductAPIBase + "/api/product/deleteProduct/" + id
-        });
-    }
+	public async Task<ResponseDto?> DeleteProductAsync(Guid id)
+	{
+		return await _baseService.SendAsync(new RequestDto()
+		{
+			ApiType = SD.ApiType.DELETE,
+			Url = SD.ProductAPIBase + "/api/product/" + id
+		});
+	}
 
-    public async Task<ResponseDto?> GetAllProductAsync()
+	public async Task<ResponseDto?> GetAllProductAsync()
     {
-        return await _baseService.SendAsync(new RequestDto()
-        {
-            ApiType = SD.ApiType.GET,
-            Url = SD.ProductAPIBase + "/api/product"
-        });
-    }
+		return await _baseService.SendAsync(new RequestDto()
+		{
+			ApiType = SD.ApiType.GET,
+			Url = SD.ProductAPIBase + "/api/product"
+		});
+	}
 
     public async Task<ResponseDto?> GetProductByIdAsync(Guid id)
     {
@@ -48,13 +49,14 @@ public class ProductService : IProductService
         });
     }
 
-    public async Task<ResponseDto?> UpdateProductAsync(ProductDto productDto)
-    {
-        return await _baseService.SendAsync(new RequestDto()
-        {
-            ApiType = SD.ApiType.PUT,
-            Data = productDto,
-            Url = SD.ProductAPIBase + "/api/product"
-        });
-    }
+	public async Task<ResponseDto?> UpdateProductAsync(ProductDto productDto)
+	{
+		return await _baseService.SendAsync(new RequestDto()
+		{
+			ApiType = SD.ApiType.PUT,
+			Data = productDto,
+			Url = SD.ProductAPIBase + "/api/product",
+			ContentType = SD.ContentType.MultipartFormData
+		});
+	}
 }

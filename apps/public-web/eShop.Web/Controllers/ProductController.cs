@@ -30,37 +30,30 @@ public class ProductController : Controller
         }
         return View(list);
     }
-    //toDo
-    ///Добавить imageUrl во view
     public async Task<IActionResult> ProductCreate()
     {
         return View();
     }
     [HttpPost]
-    //Доделать
     public async Task<IActionResult> ProductCreate(ProductDto model)
     {
-        //toDo
-        // свойства product из productService должны совпадать с product в eshop.Web 
         model.Id = Guid.NewGuid();
-        model.ImageUrl = "https://placehold.co/600x400";
-        
-        //if (ModelState.IsValid)
-        //{
-            ResponseDto? response = await _productService.CreateProductsAsync(model);
-            if (response != null && response.IsSuccess)
-            {
-                TempData["success"] = "product created successfully";
-                return RedirectToAction(nameof(ProductIndex));
-            }
-            else
-            {
-                TempData["error"] = response?.Message;
-            }
-        //}
-        return View(model);
-    }
-    ///Добавить imageUrl во view
+		if (ModelState.IsValid)
+		{
+			ResponseDto? response = await _productService.CreateProductsAsync(model);
+
+			if (response != null && response.IsSuccess)
+			{
+				TempData["success"] = "Product created successfully";
+				return RedirectToAction(nameof(ProductIndex));
+			}
+			else
+			{
+				TempData["error"] = response?.Message;
+			}
+		}
+		return View(model);
+	}
     public async Task<IActionResult> ProductDelete(Guid productId)
     {
         ResponseDto? response = await _productService.GetProductByIdAsync(productId);
