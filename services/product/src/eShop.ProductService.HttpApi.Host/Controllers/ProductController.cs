@@ -150,13 +150,20 @@ public class ProductController : ControllerBase
     }
     [HttpPut]
     [Authorize(Roles = "ADMIN")]
-    public async Task<ResponseDto> Update([FromBody] ProductDto ProductDto)
+    public async Task<ResponseDto> Update([FromForm] ProductDto productDto)
     {
         try
         {
-            Product product = _mapper.Map<Product>(ProductDto);
+            Product product = new();
+            product.Id = productDto.Id;
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.CategoryName = productDto.CategoryName;
+            product.ImageLocalPath = productDto.ImageLocalPath;
+            product.ImageUrl = productDto.ImageUrl;
 
-            if (ProductDto.Image != null)
+            if (productDto.Image != null)
             {
                 if (!string.IsNullOrEmpty(product.ImageLocalPath))
                 {
@@ -168,12 +175,12 @@ public class ProductController : ControllerBase
                     }
                 }
 
-                string fileName = product.Id + Path.GetExtension(ProductDto.Image.FileName);
+                string fileName = product.Id + Path.GetExtension(productDto.Image.FileName);
                 string filePath = @"wwwroot\ProductImages\" + fileName;
                 var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
                 using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
                 {
-                    ProductDto.Image.CopyTo(fileStream);
+                    productDto.Image.CopyTo(fileStream);
                 }
                 var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
                 product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
@@ -184,7 +191,7 @@ public class ProductController : ControllerBase
             _db.Products.Update(product);
             _db.SaveChanges();
 
-            _response.Result = _mapper.Map<ProductDto>(product);
+            _response.Result = product;
         }
         catch (Exception ex)
         {

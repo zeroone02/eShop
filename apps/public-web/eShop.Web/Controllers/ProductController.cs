@@ -54,9 +54,9 @@ public class ProductController : Controller
 		}
 		return View(model);
 	}
-    public async Task<IActionResult> ProductDelete(Guid productId)
+    public async Task<IActionResult> ProductDelete(Guid id)
     {
-        ResponseDto? response = await _productService.GetProductByIdAsync(productId);
+        ResponseDto? response = await _productService.GetProductByIdAsync(id);
 
         if (response != null && response.IsSuccess)
         {
@@ -89,9 +89,9 @@ public class ProductController : Controller
         return View(productDto);
     }
     ///Добавить imageUrl во view
-    public async Task<IActionResult> ProductEdit(Guid productId)
+    public async Task<IActionResult> ProductEdit(Guid id)
     {
-        ResponseDto? response = await _productService.GetProductByIdAsync(productId);
+        ResponseDto? response = await _productService.GetProductByIdAsync(id);
 
         if (response != null && response.IsSuccess)
         {

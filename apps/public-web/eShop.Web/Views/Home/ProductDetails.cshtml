@@ -23,11 +23,13 @@
                             <div class="row pl-3">
 
                                 <div class="col-12">
-                                    <span class="badge bg-primary text-success p-3 border">@Model.CategoryName</span>
-                                    <p class="text-secondary pt-3">@Html.Raw(Model.Description)</p>
+                                    <span class="badge badge-primary text-success p-3 border">@Model.CategoryName</span>
+                                    <h3 class="text-success"></h3>
+
+                                    <p class="text-secondary">@Html.Raw(Model.Description) </p>
                                 </div>
                             </div>
-                            <div class="row mx-0">
+                            <div class="row px-4">
                                 <input asp-for="Count" class="form-control" />
                                 <span asp-validation-for="Count" class="text-danger"></span>
                             </div>
@@ -37,9 +39,11 @@
             </div>
             <div class="card-footer row bg-dark">
                 <div class="col-12 col-md-6 pb-1 ">
-                    <a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to List</a>
+                    <a class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to List</a>
                 </div>
                 <div class="col-12 col-md-6 ">
+
+
                     <button type="submit" class="btn btn-primary form-control btn-lg" style="height:50px;">Add to Cart</button>
                 </div>
             </div>
@@ -47,6 +51,6 @@
     </div>
 </form>
 
-@section Scripts{
+@section Scripts{ 
     <partial name="_ValidationScriptsPartial" />
 }

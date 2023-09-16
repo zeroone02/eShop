@@ -27,7 +27,7 @@ public class ProductService : IProductService
 		return await _baseService.SendAsync(new RequestDto()
 		{
 			ApiType = SD.ApiType.DELETE,
-			Url = SD.ProductAPIBase + "/api/product/" + id
+			Url = SD.ProductAPIBase + "/api/product/deleteProduct/" + id
 		});
 	}
 
